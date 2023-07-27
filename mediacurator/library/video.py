@@ -171,8 +171,8 @@ class Video():
                     newfilename = str(newfilename)[str(newfilename).rindex("/") + 1:]
         else:
             newfilename = self.filename_origin[:-4] + ".mkv"
-            if os.path.exists(self.path + newfilename, vcodec):
-                newfilename = findfreename(self.path + newfilename)
+            if os.path.exists(self.path + newfilename):
+                newfilename = findfreename(self.path + newfilename, vcodec)
                 if os.name == 'nt':
                     newfilename = str(newfilename)[str(newfilename).rindex("\\") + 1:]
                 else:
