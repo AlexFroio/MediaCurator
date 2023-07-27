@@ -9,7 +9,7 @@ import colorama
 colorama.init()
 
 class Video():
-    '''Contains the information and methods of a video file.'''        
+    '''Contains the information and methods of a video file.'''
 
     def __init__(self, filepath, useful = True, verbose = False):
         '''Contains the information and methods of a video file.
@@ -32,7 +32,7 @@ class Video():
         self.definition = None
         self.width = None
         self.height = None
-        
+
         #Breaking down the full path in its components
         if os.name == 'nt':
             self.path               = str(filepath)[:str(filepath).rindex("\\") + 1]
@@ -56,12 +56,12 @@ class Video():
             try:
                 self.width, self.height = self.detect_resolution(filepath)
                 self.definition         = self.detect_definition(
-                                                width = self.width, 
+                                                width = self.width,
                                                 height = self.height )
             except:
                 self.width, self.height = False, False
                 self.definition         = False
-        
+
         if self.error and verbose:
             print(f"{colorama.Fore.RED}There seams to be an error with \"{filepath}\"{colorama.Fore.RESET}")
             print(f"{colorama.Fore.RED}    {self.error}{colorama.Fore.RESET}")
@@ -77,7 +77,7 @@ class Video():
 
         if type(self.error) is str and "FileNotFoundError" in self.error:
             return self.error
-        
+
         text = f"{self.codec} - "
 
         # If the first character of the definition is not a number (ie UHD and not 720p) upper it
@@ -91,7 +91,7 @@ class Video():
             text += f"{self.filesize / 1024 :.2f} gb - "
         else:
             text += f"{self.filesize} mb - "
-        
+
         text += f"'{self.path + self.filename_origin}'"
 
 
@@ -99,7 +99,7 @@ class Video():
             text += f"{colorama.Fore.RED}\nErrors:{colorama.Fore.RESET}"
             for err in self.error.splitlines():
                 text += f"{colorama.Fore.RED}\n    {err}{colorama.Fore.RESET}"
-        
+
 
         return text
 
@@ -118,7 +118,7 @@ class Video():
 
         if type(self.error) is str and "FileNotFoundError" in self.error:
             return self.error
-        
+
         text = f"{self.path + self.filename_origin}\n"
         #text += f"    Useful:         {self.useful}\n"
 
@@ -140,12 +140,12 @@ class Video():
             text += f"{colorama.Fore.RED}\n    Errors:{colorama.Fore.RESET}"
             for err in self.error.splitlines():
                 text += f"{colorama.Fore.RED}\n        {err}{colorama.Fore.RESET}"
-        
+
 
         return text
 
 
-    def convert(self, vcodec = "x265", acodec = False, extension = "mkv", verbose = False):
+    def convert(self, vcodec = "x265", acodec = False, extension = "mkv", verbose = False, hwaccel = False):
         '''
             Convert to original file to the requested format / codec
             verbose will print ffmpeg's output
@@ -155,7 +155,7 @@ class Video():
             acodec = False      :   Currently not enabled, will be for audio codecs
             extension = "mkv"   :   A string containing the new video container format and file extention
             verbose = False     :   A boolean enabling verbosity
-        
+
         Returns:
             boolean             :   Operation success
         '''
@@ -181,17 +181,19 @@ class Video():
         self.filename_tmp =  newfilename
 
         # Settting ffmpeg
-        args = ['ffmpeg', '-i', self.path + self.filename_origin]
-
+        if (hwaccel):
+            args = ['ffmpeg', '-i', self.path + self.filename_origin]
+        else:
+            args = ['ffmpeg', '-hwaccel','-i', self.path + self.filename_origin]
         # conversion options
         if vcodec == "av1":
-            args += ['-c:v', 'libaom-av1', '-strict', 'experimental']
+            args += ['-c:v', 'libaom-av1']#, '-strict', 'experimental']
         elif vcodec == "x265" or vcodec == "hevc":
             args += ['-c:v', 'libx265']
             args += ['-max_muxing_queue_size', '1000']
         # conversion output
         args += [self.path + self.filename_tmp]
-        
+
         try:
             if verbose:
                 subprocess.call(args)
@@ -222,7 +224,7 @@ class Video():
 
         Args:
             filepath    :   A string containing the full filepath
-        
+
         Returns:
             String      :   The errors that have been found / happened
             False       :   The lack of errors
@@ -252,7 +254,7 @@ class Video():
         try:
             args = ["ffprobe", "-v", "quiet", "-select_streams", "v:0", "-show_entries", "stream=codec_name", "-of", "default=noprint_wrappers=1:nokey=1", str(filepath)]
             output = subprocess.check_output(args, stderr=subprocess.STDOUT)
-            
+
             # decoding from binary, stripping whitespace, keep only last line
             # in case ffmprobe added error messages over the requested information
             output = output.decode().strip()
@@ -274,7 +276,7 @@ class Video():
         try:
             args = ["ffprobe","-v","quiet","-select_streams","v:0", "-show_entries","stream=width,height","-of","csv=s=x:p=0",str(filepath)]
             output = subprocess.check_output(args, stderr=subprocess.STDOUT)
-            
+
             # decoding from binary, stripping whitespace, keep only last line
             # in case ffmprobe added error messages over the requested information
             output = output.decode().strip()
@@ -299,7 +301,7 @@ class Video():
             width, height = Video.detect_resolution(filepath)
         if not width and not height:
             return False
-        
+
         if width >= 2160 or height >= 2160:
             return "uhd"
         elif width >= 1440 or height >= 1080:

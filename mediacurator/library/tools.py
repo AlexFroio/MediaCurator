@@ -12,7 +12,7 @@ colorama.init()
 
 
 def load_arguments():
-    '''Get/load command parameters 
+    '''Get/load command parameters
 
     Args:
 
@@ -26,10 +26,12 @@ def load_arguments():
         "filters": list(),
         "outputs": list(),
         "printop": list(),
+        "hwaccel": bool()
     }
 
     for arg in sys.argv:
         # Confirm with the user that he selected to delete found files
+        arguments["hwaccel"] = False
         if "-del" in arg:
             print(
                 f"{colorama.Fore.YELLOW}WARNING: Delete option selected!{colorama.Fore.RESET}")
@@ -48,6 +50,8 @@ def load_arguments():
             arguments["files"] += arg[7:].split(",,")
         elif "-dirs:" in arg:
             arguments["directories"] += arg[6:].split(",,")
+        elif "-hwaccel" in arg:
+            arguments["hwaccel"] = True
 
     return arguments
 

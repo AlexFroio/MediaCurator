@@ -59,7 +59,7 @@ def main():
     else:
         print(f"{colorama.Fore.RED}ERROR: No files or directories selected.{colorama.Fore.RESET}")
         return
-        
+
 
     # Actions
     if sys.argv[1] == "list":
@@ -106,7 +106,7 @@ def main():
                 # if marked for deletion delete and unwatch the video
                 if "-del" in sys.argv:
                     medialibrary.unwatch(filepath, delete = True)
-        
+
     elif sys.argv[1] == "convert":
         counter = 0
 
@@ -133,13 +133,13 @@ def main():
             print(f"{colorama.Fore.GREEN}Converting please wait...{colorama.Fore.RESET}", end="\r")
 
             # Converting
-            if medialibrary.videos[filepath].convert(verbose = "verbose" in arguments["printop"]):
+            if medialibrary.videos[filepath].convert(verbose = "verbose" in arguments["printop"], hwaccel = arguments["hwaccel"]):
                 # Mark the job as done
                 medialibrary.videos[filepath].useful = False
 
                 # Scan the new video
                 newfpath = medialibrary.videos[filepath].path + medialibrary.videos[filepath].filename_new
-                
+
                 medialibrary.videos[newfpath] = Video(newfpath, verbose = "verbose" in arguments["printop"])
 
                 # Verbose
@@ -162,7 +162,7 @@ def main():
                     medialibrary.unwatch(filepath, delete = True)
 
 
-        
+
 
 
 if __name__ == '__main__':
