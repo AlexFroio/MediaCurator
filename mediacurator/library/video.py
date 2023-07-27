@@ -183,11 +183,13 @@ class Video():
         # Settting ffmpeg
         if (hwaccel):
             args = ['ffmpeg', '-i', self.path + self.filename_origin]
+            print("hwaccel set")
         else:
             args = ['ffmpeg', '-hwaccel','-i', self.path + self.filename_origin]
         # conversion options
         if vcodec == "av1":
             args += ['-c:v', 'libaom-av1']#, '-strict', 'experimental']
+            print("av1 set")
         elif vcodec == "x265" or vcodec == "hevc":
             args += ['-c:v', 'libx265']
             args += ['-max_muxing_queue_size', '1000']
