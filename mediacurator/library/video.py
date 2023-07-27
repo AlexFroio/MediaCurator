@@ -182,7 +182,7 @@ class Video():
 
         # Settting ffmpeg
         if (hwaccel):
-            args = ['ffmpeg', '-hwaccel','-i', self.path + self.filename_origin]
+            args = ['ffmpeg', '-hwaccel','dxva2', '-hwaccel_output_format', 'dxva2_vld','-i', self.path + self.filename_origin]
         else:
             args = ['ffmpeg', '-i', self.path + self.filename_origin]
         # conversion options
