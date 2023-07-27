@@ -119,6 +119,7 @@ def main():
             # Setting required variables
             if "av1" in arguments["outputs"]:
                 vcodec = "av1"
+                print("set vcodec to av1")
             else:
                 vcodec = "x265"
 
