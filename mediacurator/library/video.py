@@ -164,14 +164,14 @@ class Video():
         if "mp4" in extension:
             newfilename = self.filename_origin[:-4] + ".mp4"
             if os.path.exists(self.path + newfilename):
-                newfilename = findfreename(self.path + newfilename)
+                newfilename = findfreename(self.path + newfilename, vcodec)
                 if os.name == 'nt':
                     newfilename = str(newfilename)[str(newfilename).rindex("\\") + 1:]
                 else:
                     newfilename = str(newfilename)[str(newfilename).rindex("/") + 1:]
         else:
             newfilename = self.filename_origin[:-4] + ".mkv"
-            if os.path.exists(self.path + newfilename):
+            if os.path.exists(self.path + newfilename, vcodec):
                 newfilename = findfreename(self.path + newfilename)
                 if os.name == 'nt':
                     newfilename = str(newfilename)[str(newfilename).rindex("\\") + 1:]
@@ -182,9 +182,9 @@ class Video():
 
         # Settting ffmpeg
         if (hwaccel):
-            args = ['ffmpeg', '-i', self.path + self.filename_origin]
-        else:
             args = ['ffmpeg', '-hwaccel','-i', self.path + self.filename_origin]
+        else:
+            args = ['ffmpeg', '-i', self.path + self.filename_origin]
         # conversion options
         if vcodec == "av1":
             args += ['-c:v', 'libaom-av1', '-strict', 'experimental']
