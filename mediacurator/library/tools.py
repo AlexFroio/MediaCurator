@@ -119,7 +119,7 @@ def deletefile(filepath):
     return True
 
 
-def findfreename(filepath, attempt=0, vcodec = "x265"):
+def findfreename(filepath, vcodec = "x265", attempt=0):
     ''' Given a filepath it will try to find a free filename by appending to the name.
     First trying as passed in argument, then adding [HEVC] to the end and if all fail [HEVC](#).
 
