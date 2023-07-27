@@ -119,7 +119,6 @@ def main():
             # Setting required variables
             if "av1" in arguments["outputs"]:
                 vcodec = "av1"
-                print("set vcodec to av1")
             else:
                 vcodec = "x265"
 
@@ -134,7 +133,7 @@ def main():
             print(f"{colorama.Fore.GREEN}Converting please wait...{colorama.Fore.RESET}", end="\r")
 
             # Converting
-            if medialibrary.videos[filepath].convert(verbose = "verbose" in arguments["printop"], hwaccel = arguments["hwaccel"]):
+            if medialibrary.videos[filepath].convert(vcodec = vcodec, verbose = "verbose" in arguments["printop"], hwaccel = arguments["hwaccel"]):
                 # Mark the job as done
                 medialibrary.videos[filepath].useful = False
 
