@@ -189,7 +189,7 @@ class Video():
         # conversion options
         print(vcodec)
         if vcodec == "av1":
-            args += ['-c:v', 'libaom-av1']#, '-strict', 'experimental']
+            args += ['-c:v', 'libaom-av1', '-strict', 'experimental']
         elif vcodec == "x265" or vcodec == "hevc":
             args += ['-c:v', 'libx265']
             args += ['-max_muxing_queue_size', '1000']
