@@ -182,7 +182,7 @@ class Video():
 
         # Settting ffmpeg
         if (hwaccel):
-            args = ['/usr/share/jellyfin-ffmpeg/ffmpeg', '-hwaccel','dxva2', '-hwaccel_output_format', 'dxva2_vld','-i', self.path + self.filename_origin]
+            args = ['/usr/share/jellyfin-ffmpeg/ffmpeg', '-hwaccel','dxva2', '-hwaccel_output_format', 'dxva2_vld','-i', self.path + self.filename_origin, '> ', '/usr/share/coding_errors/out.txt']
         else:
             args = ['/usr/share/jellyfin-ffmpeg/ffmpeg', '-i', self.path + self.filename_origin]
         # conversion options
