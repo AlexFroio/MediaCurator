@@ -72,6 +72,7 @@ def detect_ffmpeg():
             # Strip the useless text and
             return txt.split(' ')[2]
         else:
+            print("checking jellyfin folder")
             txt = subprocess.check_output(
                 ['/usr/share/jellyfin-ffmpeg/ffmpeg', '-version'], stderr=subprocess.STDOUT).decode()
             if "ffmpeg version" in txt:
