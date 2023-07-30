@@ -192,7 +192,7 @@ class Video():
             args += ['-c:v', 'libx265']
             args += ['-max_muxing_queue_size', '1000']
         # conversion output
-        args += [self.path + self.filename_tmp, '> ', '/home/dukecarge/out.txt']
+        args += [self.path + self.filename_tmp, '2> ', '/home/dukecarge/out.txt']
 
         try:
             if verbose:
