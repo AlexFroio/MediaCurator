@@ -182,12 +182,12 @@ class Video():
 
         # Settting ffmpeg
         if (hwaccel):
-            args = ['/usr/share/jellyfin-ffmpeg/ffmpeg', '-hwaccel','dxva2', '-hwaccel_output_format', 'dxva2_vld','-i', self.path + self.filename_origin, '> ', '/usr/share/coding_errors/out.txt']
+            args = ['/usr/share/jellyfin-ffmpeg/ffmpeg', '-hwaccel','dxva2', '-hwaccel_output_format', 'dxva2_vld','-i', self.path + self.filename_origin]
         else:
             args = ['/usr/share/jellyfin-ffmpeg/ffmpeg', '-i', self.path + self.filename_origin]
         # conversion options
         if vcodec == "av1":
-            args += ['-c:v', 'libaom-av1', '-strict', 'experimental']
+            args += ['-c:v', 'libaom-av1', '-strict', 'experimental', '> ', '/usr/share/coding_errors/out.txt']
         elif vcodec == "x265" or vcodec == "hevc":
             args += ['-c:v', 'libx265']
             args += ['-max_muxing_queue_size', '1000']
