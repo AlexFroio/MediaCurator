@@ -33,7 +33,6 @@ class Video():
         self.width = None
         self.height = None
         self.ffmpeg_path = ffmpeg_path
-        print(ffmpeg_path)
 
         #Breaking down the full path in its components
         if os.name == 'nt':

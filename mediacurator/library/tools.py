@@ -54,8 +54,6 @@ def load_arguments():
             arguments["hwaccel"] = True
         elif "-ffmpeg_path":
             arguments["ffmpeg_path"] = arg[13:]
-            print(arguments["ffmpeg_path"])
-            ffmpeg_path = arguments["ffmpeg_path"]
 
     return arguments
 
@@ -72,7 +70,6 @@ def detect_ffmpeg():
         for arg in sys.argv:
             if "-ffmpeg_path":
                 ffmpeg_path = arg[13:]
-        print(ffmpeg_path)
         txt = subprocess.check_output(
             [ffmpeg_path + 'ffmpeg', '-version'], stderr=subprocess.STDOUT).decode()
         if "ffmpeg version" in txt:
