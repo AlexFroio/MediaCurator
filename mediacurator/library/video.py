@@ -53,6 +53,7 @@ class Video():
             #Gathering information on the video
             self.filesize    = self.detect_filesize(filepath)
             self.error              = self.detect_fferror(filepath)
+            print(filepath)
             self.codec              = self.detect_codec(filepath)
             try:
                 self.width, self.height = self.detect_resolution(filepath)
