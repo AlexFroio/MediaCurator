@@ -182,9 +182,9 @@ class Video():
 
         # Settting ffmpeg
         if (hwaccel):
-            args = ['/usr/share/jellyfin-ffmpeg/ffmpeg', '-hwaccel','dxva2', '-hwaccel_output_format', 'dxva2_vld','-i', self.path + self.filename_origin]
+            args = ['ffmpeg', '-hwaccel','dxva2', '-hwaccel_output_format', 'dxva2_vld','-i', self.path + self.filename_origin]
         else:
-            args = ['/usr/share/jellyfin-ffmpeg/ffmpeg', '-i', self.path + self.filename_origin]
+            args = ['ffmpeg', '-i', self.path + self.filename_origin]
         # conversion options
         if vcodec == "av1":
             args += ['-c:v', 'libaom-av1', '-strict', 'experimental']
@@ -230,7 +230,7 @@ class Video():
             False       :   The lack of errors
         '''
         try:
-            args = ["/usr/share/jellyfin-ffmpeg/ffprobe","-v","error",str(filepath)]
+            args = ["fprobe","-v","error",str(filepath)]
             output = subprocess.check_output(args, stderr=subprocess.STDOUT)
             output = output.decode().strip()
             if len(output) > 0:
@@ -252,7 +252,7 @@ class Video():
         '''
         output = False
         try:
-            args = ["/usr/share/jellyfin-ffmpeg/ffprobe", "-v", "quiet", "-select_streams", "v:0", "-show_entries", "stream=codec_name", "-of", "default=noprint_wrappers=1:nokey=1", str(filepath)]
+            args = ["ffprobe", "-v", "quiet", "-select_streams", "v:0", "-show_entries", "stream=codec_name", "-of", "default=noprint_wrappers=1:nokey=1", str(filepath)]
             output = subprocess.check_output(args, stderr=subprocess.STDOUT)
 
             # decoding from binary, stripping whitespace, keep only last line
@@ -274,7 +274,7 @@ class Video():
             False       :   An error in the codec fetching process
         '''
         try:
-            args = ["/usr/share/jellyfin-ffmpeg/ffprobe","-v","quiet","-select_streams","v:0", "-show_entries","stream=width,height","-of","csv=s=x:p=0",str(filepath)]
+            args = ["ffprobe","-v","quiet","-select_streams","v:0", "-show_entries","stream=width,height","-of","csv=s=x:p=0",str(filepath)]
             output = subprocess.check_output(args, stderr=subprocess.STDOUT)
 
             # decoding from binary, stripping whitespace, keep only last line
