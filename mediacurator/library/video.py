@@ -243,7 +243,7 @@ class Video():
         return False
 
 
-    @staticmethod
+    #@staticmethod
     def detect_codec(self, filepath):
         '''Returns a string with the detected codec
 
@@ -266,7 +266,7 @@ class Video():
         return output
 
 
-    @staticmethod
+    #@staticmethod
     def detect_resolution(self, filepath):
         '''Returns a list with the detected width(0) and height(1)
 
