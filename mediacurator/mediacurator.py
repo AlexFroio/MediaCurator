@@ -55,9 +55,9 @@ def main():
 
     # Loading the media library
     if len(arguments["files"]) > 0:
-        medialibrary = MediaLibrary(files = arguments["files"], inputs = arguments["inputs"], filters = arguments["filters"])
+        medialibrary = MediaLibrary(files = arguments["files"], inputs = arguments["inputs"], filters = arguments["filters"], ffmpeg_path=arguments["ffmpeg_path"])
     elif len(arguments["directories"]) > 0:
-        medialibrary = MediaLibrary(directories = arguments["directories"], inputs = arguments["inputs"], filters = arguments["filters"])
+        medialibrary = MediaLibrary(directories = arguments["directories"], inputs = arguments["inputs"], filters = arguments["filters"], ffmpeg_path=arguments["ffmpeg_path"])
     else:
         print(f"{colorama.Fore.RED}ERROR: No files or directories selected.{colorama.Fore.RESET}")
         return
