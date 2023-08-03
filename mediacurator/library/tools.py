@@ -9,7 +9,6 @@ import sys
 
 import colorama
 colorama.init()
-ffmpeg_path = ''
 
 def load_arguments():
     '''Get/load command parameters
@@ -60,7 +59,6 @@ def load_arguments():
 
     return arguments
 
-
 def detect_ffmpeg():
     '''Returns the version of ffmpeg that is installed or false
 
@@ -71,6 +69,9 @@ def detect_ffmpeg():
         False   :   The failure of retreiving the version number
     '''
     try:
+        for arg in sys.argv:
+            if "-ffmpeg_path":
+                ffmpeg_path = arg[13:]
         print(ffmpeg_path)
         txt = subprocess.check_output(
             [ffmpeg_path + 'ffmpeg', '-version'], stderr=subprocess.STDOUT).decode()
