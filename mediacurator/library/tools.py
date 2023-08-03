@@ -9,7 +9,7 @@ import sys
 
 import colorama
 colorama.init()
-
+ffmpeg_path = ''
 
 def load_arguments():
     '''Get/load command parameters
@@ -55,6 +55,8 @@ def load_arguments():
             arguments["hwaccel"] = True
         elif "-ffmpeg_path":
             arguments["ffmpeg_path"] += arg[11:]
+            print(arguments["ffmpeg_path"])
+            ffmpeg_path = arguments["ffmpeg_path"]
 
     return arguments
 
@@ -70,7 +72,7 @@ def detect_ffmpeg():
     '''
     try:
         txt = subprocess.check_output(
-            ['ffmpeg', '-version'], stderr=subprocess.STDOUT).decode()
+            [ffmpeg_path + 'ffmpeg', '-version'], stderr=subprocess.STDOUT).decode()
         if "ffmpeg version" in txt:
             # Strip the useless text and
             return txt.split(' ')[2]
