@@ -140,7 +140,7 @@ def main():
                 # Scan the new video
                 newfpath = medialibrary.videos[filepath].path + medialibrary.videos[filepath].filename_new
 
-                medialibrary.videos[newfpath] = Video(newfpath, verbose = "verbose" in arguments["printop"])
+                medialibrary.videos[newfpath] = Video(newfpath, verbose = "verbose" in arguments["printop"], arguments["ffmpeg_path"])
 
                 # Verbose
                 print(f"{colorama.Fore.GREEN}Successfully converted '{medialibrary.videos[filepath].filename_origin}'{colorama.Fore.CYAN}({medialibrary.videos[filepath].filesize}mb){colorama.Fore.GREEN} to '{medialibrary.videos[newfpath].filename_origin}'{colorama.Fore.CYAN}({medialibrary.videos[newfpath].filesize}mb){colorama.Fore.GREEN}, {colorama.Fore.CYAN}new file:{colorama.Fore.RESET}")

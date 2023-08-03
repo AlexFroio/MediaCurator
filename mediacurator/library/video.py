@@ -11,7 +11,7 @@ colorama.init()
 class Video():
     '''Contains the information and methods of a video file.'''
 
-    def __init__(self, filepath, useful = True, verbose = False):
+    def __init__(self, filepath, useful = True, verbose = False, ffmpeg_path = ''):
         '''Contains the information and methods of a video file.
 
         Args:
@@ -32,6 +32,7 @@ class Video():
         self.definition = None
         self.width = None
         self.height = None
+        self.ffmpeg_path = ffmpeg_path
 
         #Breaking down the full path in its components
         if os.name == 'nt':
@@ -182,9 +183,9 @@ class Video():
 
         # Settting ffmpeg
         if (hwaccel):
-            args = ['ffmpeg', '-hwaccel','dxva2', '-hwaccel_output_format', 'dxva2_vld','-i', self.path + self.filename_origin]
+            args = [self.ffmpeg_path + 'ffmpeg', '-hwaccel','dxva2', '-hwaccel_output_format', 'dxva2_vld','-i', self.path + self.filename_origin]
         else:
-            args = ['ffmpeg', '-i', self.path + self.filename_origin]
+            args = [self.ffmpeg_path + 'ffmpeg', '-i', self.path + self.filename_origin]
         # conversion options
         if vcodec == "av1":
             args += ['-c:v', 'libaom-av1', '-strict', 'experimental']
@@ -241,7 +242,7 @@ class Video():
 
 
     @staticmethod
-    def detect_codec(filepath):
+    def detect_codec(self, filepath):
         '''Returns a string with the detected codec
 
         Args:
@@ -252,7 +253,7 @@ class Video():
         '''
         output = False
         try:
-            args = ["ffprobe", "-v", "quiet", "-select_streams", "v:0", "-show_entries", "stream=codec_name", "-of", "default=noprint_wrappers=1:nokey=1", str(filepath)]
+            args = [self.ffmpeg_path + "ffprobe", "-v", "quiet", "-select_streams", "v:0", "-show_entries", "stream=codec_name", "-of", "default=noprint_wrappers=1:nokey=1", str(filepath)]
             output = subprocess.check_output(args, stderr=subprocess.STDOUT)
 
             # decoding from binary, stripping whitespace, keep only last line
@@ -264,7 +265,7 @@ class Video():
 
 
     @staticmethod
-    def detect_resolution(filepath):
+    def detect_resolution(self, filepath):
         '''Returns a list with the detected width(0) and height(1)
 
         Args:
@@ -274,7 +275,7 @@ class Video():
             False       :   An error in the codec fetching process
         '''
         try:
-            args = ["ffprobe","-v","quiet","-select_streams","v:0", "-show_entries","stream=width,height","-of","csv=s=x:p=0",str(filepath)]
+            args = [self.ffmpeg_path + "ffprobe","-v","quiet","-select_streams","v:0", "-show_entries","stream=width,height","-of","csv=s=x:p=0",str(filepath)]
             output = subprocess.check_output(args, stderr=subprocess.STDOUT)
 
             # decoding from binary, stripping whitespace, keep only last line

@@ -11,8 +11,8 @@ colorama.init()
 
 class MediaLibrary():
     ''' This is the library object who holds the information about the workspace and all the videos in it. '''
-    
-    def __init__(self, files = False, directories = False, inputs = ["any"], filters = [], verbose = False):
+
+    def __init__(self, files = False, directories = False, inputs = ["any"], filters = [], verbose = False, ffmpeg_path = ''):
         '''
             This is the library object who holds the information about the workspace and all the videos in it.
 
@@ -27,20 +27,21 @@ class MediaLibrary():
 
         if not files and not directories:
             return
-        
+
         self.directories    = None
         self.inputs         = inputs
         self.filters        = filters
         self.videos         = dict()
-        
+        self.ffmpeg_path    = ffmpeg_path
+
         if files:
             for filepath in files:
-                self.videos[filepath] = Video(filepath, verbose = verbose)
+                self.videos[filepath] = Video(filepath, verbose = verbose, ffmpeg_path = ffmpeg_path)
 
         if directories:
             self.directories    = directories
             self.load_directories(verbose = verbose)
-        
+
         self.filter_videos(verbose = verbose)
 
     def __str__(self):
@@ -65,13 +66,13 @@ class MediaLibrary():
 
         Args:
             verbose = False     : A list of print options
-        
+
         Returns:
         '''
 
         print(f"{colorama.Fore.GREEN}Scanning files in {', '.join(map(str, self.directories))} for videos{colorama.Fore.RESET}")
         videolist = []
-        
+
         for directory in self.directories:
             path = Path(directory)
             # get all video filetypes
@@ -101,7 +102,7 @@ class MediaLibrary():
                 videolist += list(path.rglob("*.[oO][gG][mM]"))
             if "webm" in self.inputs or "any" in self.inputs or len(self.inputs) < 1:
                 videolist += list(path.rglob("*.[wW][eE][bB][mM]"))
-        
+
         # Remove folders
         videolist_tmp = videolist
         videolist = [video for video in videolist_tmp if video.is_file()]
@@ -113,15 +114,15 @@ class MediaLibrary():
             if verbose:
                 iteration += 1
                 print(f'{int((iteration / len(videolist )* 100))}% complete', end='\r')
-            
-            self.videos[video] = Video(video, verbose = verbose)
+
+            self.videos[video] = Video(video, verbose = verbose, ffmpeg_path= self.ffmpeg_path)
 
     def filter_videos(self, verbose = False):
         ''' Mark useless videos in the videos dictionary (default is useful)
 
         Args:
             verbose = False     : A list of print options
-        
+
         Returns:
         '''
 
@@ -175,7 +176,7 @@ class MediaLibrary():
                     useful = True
                 self.videos[filepath].useful = useful
 
-            
+
         print(f"{colorama.Fore.GREEN}Found {len([filepath for filepath in self.videos if self.videos[filepath].useful])} videos for the requested parameters{colorama.Fore.RESET}")
 
     def unwatch(self, filepath, delete = False):
@@ -184,11 +185,11 @@ class MediaLibrary():
         Args:
             filepath            :    A string containing the full filepath
             delete = False      :    Delete the file as well as removing it from the library
-        
+
         Returns:
             boolean             :   Operation success
         '''
-        
+
         if delete:
             deletefile(filepath)
         try:

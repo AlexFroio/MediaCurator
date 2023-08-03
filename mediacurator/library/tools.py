@@ -26,7 +26,8 @@ def load_arguments():
         "filters": list(),
         "outputs": list(),
         "printop": list(),
-        "hwaccel": bool()
+        "hwaccel": bool(),
+        "ffmpeg_path": str()
     }
 
     for arg in sys.argv:
@@ -67,17 +68,10 @@ def detect_ffmpeg():
     '''
     try:
         txt = subprocess.check_output(
-            ['/usr/share/jellyfin-ffmpeg/ffmpeg', '-version'], stderr=subprocess.STDOUT).decode()
+            ['ffmpeg', '-version'], stderr=subprocess.STDOUT).decode()
         if "ffmpeg version" in txt:
             # Strip the useless text and
             return txt.split(' ')[2]
-        else:
-            print("checking jellyfin folder")
-            txt = subprocess.check_output(
-                ['/usr/share/jellyfin-ffmpeg/ffmpeg', '-version'], stderr=subprocess.STDOUT).decode()
-            if "ffmpeg version" in txt:
-            # Strip the useless text and
-                return txt.split(' ')[2]
     except:
         pass
     return False
