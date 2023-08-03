@@ -54,7 +54,7 @@ def load_arguments():
         elif "-hwaccel" in arg:
             arguments["hwaccel"] = True
         elif "-ffmpeg_path":
-            #arguments["ffmpeg_path"] += arg[11:].split(",,")
+            arguments["ffmpeg_path"] += arg[13:].split(",")
             print(arguments["ffmpeg_path"])
             ffmpeg_path = arguments["ffmpeg_path"]
 
