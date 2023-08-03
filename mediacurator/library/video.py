@@ -53,8 +53,6 @@ class Video():
             #Gathering information on the video
             self.filesize    = self.detect_filesize(filepath)
             self.error              = self.detect_fferror(filepath)
-            print(filepath)
-            print(type( filepath))
             self.codec              = self.detect_codec(filepath)
             try:
                 self.width, self.height = self.detect_resolution(filepath)
@@ -255,6 +253,7 @@ class Video():
         '''
         output = False
         try:
+            print(self.ffmpeg_path + "ffprobe")
             args = [self.ffmpeg_path + "ffprobe", "-v", "quiet", "-select_streams", "v:0", "-show_entries", "stream=codec_name", "-of", "default=noprint_wrappers=1:nokey=1", str(filepath)]
             output = subprocess.check_output(args, stderr=subprocess.STDOUT)
 
