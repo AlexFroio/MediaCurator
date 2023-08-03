@@ -53,6 +53,8 @@ def load_arguments():
             arguments["directories"] += arg[6:].split(",,")
         elif "-hwaccel" in arg:
             arguments["hwaccel"] = True
+        elif "-ffmpeg_path":
+            arguments["ffmpeg_path"] += arg[11:]
 
     return arguments
 
