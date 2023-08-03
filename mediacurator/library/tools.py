@@ -71,6 +71,7 @@ def detect_ffmpeg():
         False   :   The failure of retreiving the version number
     '''
     try:
+        print(ffmpeg_path)
         txt = subprocess.check_output(
             [ffmpeg_path + 'ffmpeg', '-version'], stderr=subprocess.STDOUT).decode()
         if "ffmpeg version" in txt:

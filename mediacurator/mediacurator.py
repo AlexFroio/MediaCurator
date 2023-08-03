@@ -41,15 +41,17 @@ def main():
     if len(sys.argv) < 2:
         print(f"{colorama.Fore.RED}ERROR: Command not understood, please see documentation.{colorama.Fore.RESET}")
 
+
+
+    # Get/load command parameters
+    arguments = load_arguments()
+
     # confirm that ffmpeg in indeed installed
     ffmpeg_version = detect_ffmpeg()
     if not ffmpeg_version:
         print(f"{colorama.Fore.RED}No ffmpeg version detected{colorama.Fore.RESET}")
         exit()
     print(f"{colorama.Fore.BLUE}ffmpeg version detected: {ffmpeg_version}{colorama.Fore.RESET}")
-
-    # Get/load command parameters
-    arguments = load_arguments()
 
     # Loading the media library
     if len(arguments["files"]) > 0:
